@@ -36,10 +36,7 @@ import javafx.scene.text.TextAlignment;
 
 public class Main extends Application 
 {	
-	Controller c = new Controller();//instance of controller class
-	
-	
-	
+	Controller c = Controller.getInstance();//instance of controller class
 
 
 	@Override
@@ -327,6 +324,7 @@ public class Main extends Application
 			hbBtn5.getChildren().add(addJournalToStock);
 			addJournalGrid.add(hbBtn5, 1, 5);
 			
+////SCENES
 			
 			Scene loginScene = new Scene(loginGrid, 500, 400);//login/register welcome scene
 			Scene registerScene = new Scene(regGrid, 700, 500);//sign up scene
@@ -335,8 +333,14 @@ public class Main extends Application
 			Scene addBookScene = new Scene(addBookGrid, 700, 500);//add Book scene
 			Scene addJournalScene = new Scene(addJournalGrid, 700, 500); //add Journal scene
 			
-			ViewStockGrid viewStockGrid = new ViewStockGrid(primaryStage, adminScene);
-			Scene viewStockScene = new Scene(viewStockGrid.getGrid(), 750,600);
+			ViewStockGrid viewStockGrid = new ViewStockGrid(primaryStage, adminScene);//view stock scene(for admins)
+			Scene viewStockScene = new Scene(viewStockGrid.getGrid(), 800,700);
+			
+			BorrowStockGrid borrowStockGrid = new BorrowStockGrid(primaryStage, infoScene);//borrow from stock(for users)
+			Scene borrowStockScene = new Scene(borrowStockGrid.getGrid(), 800,700);
+			
+			ReturnStockGrid returnStockGrid = new ReturnStockGrid(primaryStage, infoScene); //return to stock(for users)
+			Scene returnStockScene = new Scene(returnStockGrid.getGrid(), 800,700);
 			
 
 			loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -418,15 +422,17 @@ public class Main extends Application
 					{
 						primaryStage.setScene(infoScene);
 						System.out.println("user returned to main");
-						ArrayList<String> ret = c.getUser(loginEmailTextField.getText(), loginPwField.getText());
-						infoSceneTitle.setText("Welcome, " + ret.get(0));
-						retrievedName.setText("Name: " + ret.get(0));
-						retrievedYOB.setText("Year of birth: " + ret.get(1));
-						retrievedEmail.setText("Email: " + ret.get(2));
-						retrievedPassword.setText("Password: " + ret.get(3));
-						retrievedStreet.setText("Street: " + ret.get(4));
-						retrievedTown.setText("Town: " + ret.get(5));
-						retrievedPC.setText("Postcode: " + ret.get(6));
+						Member ret = c.getUser(loginEmailTextField.getText(), loginPwField.getText());
+						
+						
+						infoSceneTitle.setText("Welcome, " + ret.getName());
+						retrievedName.setText("Name: " + ret.getName());
+						retrievedYOB.setText("Year of birth: " + ret.getYearOfBirth());
+						retrievedEmail.setText("Email: " + ret.getEmail());
+						retrievedPassword.setText("Password: " + ret.getPassword());
+						retrievedStreet.setText("Street: " + ret.getAddress().getStreet());
+						retrievedTown.setText("Town: " + ret.getAddress().getTown());
+						retrievedPC.setText("Postcode: " + ret.getAddress().getPostcode());
 					}
 					else
 					{
@@ -458,6 +464,8 @@ public class Main extends Application
 				{
 					
 	                System.out.println("Borrow book button pressed");
+	                borrowStockGrid.searchAndDisplay();
+	                primaryStage.setScene(borrowStockScene);
 
 				}
 			});
@@ -472,6 +480,8 @@ public class Main extends Application
 				{
 					
 	                System.out.println("Return book button pressed");
+	                returnStockGrid.searchAndDisplay();
+	                primaryStage.setScene(returnStockScene);
 
 				}
 			});
@@ -617,9 +627,6 @@ public class Main extends Application
 
 				}
 			});
-		
-			
-		
 			
 		} 
 		catch(Exception e) 

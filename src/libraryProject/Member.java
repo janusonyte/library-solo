@@ -1,14 +1,13 @@
 package libraryProject;
 
 public class Member extends Person
+
 {
-
-
     private int id;
     private String password;
     private String email;
     private int numberofbooks;
-    private int yearOfBirth;
+    private String yearOfBirth;
     
     
     
@@ -18,7 +17,7 @@ public class Member extends Person
     	//empty constructor
     }
     
-    public Member(int id, int yearOfBirth, String name, Address address, String password, String email, int numberofbooks)
+    public Member(int id, String yearOfBirth, String name, Address address, String password, String email, int numberofbooks)
     {
     	super(); //the Member class is now a subclass (extends Person)
     	this.id = id;
@@ -28,7 +27,7 @@ public class Member extends Person
     	
     }
     
-    public Member(String name, int yearOfBirth, String email, String password, String street, String town, String postcode)
+    public Member(String name, String yearOfBirth, String email, String password, String street, String town, String postcode)
     {
     	super(); //the Member class is now a subclass (extends Person)
     	this.yearOfBirth = yearOfBirth;
@@ -64,12 +63,44 @@ public class Member extends Person
 		return email;
 	}
 
-
-	public int getNumberofbooks() 
+	public int getId() 
 	{
-		return numberofbooks;
+		return id;
+	}
+
+	public void setId(int id) 
+	{
+		this.id = id;
+	}
+
+//	public String getYearOfBirth() 
+//	{
+//		return yearOfBirth;
+//	}
+//
+//	public void setYearOfBirth(String yearOfBirth) 
+//	{
+//		this.yearOfBirth = yearOfBirth;
+//	}
+
+	public void setPassword(String password) 
+	{
+		this.password = password;
+	}
+
+	public void setEmail(String email) 
+	{
+		this.email = email;
 	}
 	
+	
+
+
+//	public int getNumberofbooks() 
+//	{
+//		return numberofbooks;
+//	}
+//	
 	
 //
 //	void newMember(String strn,String strst, String strtown, String strpc, int yr, int mid) 

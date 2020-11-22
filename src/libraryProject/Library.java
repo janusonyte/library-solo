@@ -21,6 +21,10 @@ public class Library
 	Statement stmt;
 	PreparedStatement pstmt;
 	ResultSet rset;
+//current user
+	
+	Member currentMember;
+	
 	
 
 	private List<Member>members;
@@ -45,17 +49,16 @@ public class Library
 	}
 
 	
-	
-//	public void addMember(String name, int yearOfBirth, String email, String password, String street, String town, String postcode) 
-//	{
-//		
-//		
-//        members.add(new Member (name, yearOfBirth, email, password, street, town, postcode));
-//        //adding a new member
-//        //this creates the object Address in the method, so no need to create one in the Main class
-//   
-//	}
-	
+	public Member getCurrentMember() 
+	{
+		return currentMember;
+	}
+
+	public void setCurrentMember(Member currentMember) 
+	{
+		this.currentMember = currentMember;
+	}
+
 	public List<Member> getMembers() 
 	{
 		return members;
@@ -291,15 +294,12 @@ public class Library
 	}
 	
 	
-	
-	
 	//check if user is in database
 	
 	public boolean checkUser(String email, String pword)
 	{
 		boolean userInDb = this.checkUserInDb(email, pword);
 		return userInDb;
-		
 	}
 	
 		private boolean checkUserInDb(String email, String pword)
@@ -339,16 +339,14 @@ public class Library
 		}
 		
 //get user info
-		public ArrayList<String> getUser(String email, String pword)
+		public Member getUser(String email, String pword)
 		{
 			return this.getUserInfo(email, pword);
 		}
-		
-		
-		private ArrayList<String> getUserInfo(String email, String pword)
-		{
-			ArrayList<String> ret = new ArrayList<>();
 			
+		
+		private Member getUserInfo(String email, String pword)
+		{	
 			String sql = "SELECT memberID, name, yearofbirth, email, password, street, town, postcode FROM members WHERE email LIKE ? AND password LIKE ?";
 			
 			try 
@@ -360,36 +358,49 @@ public class Library
 				rset = pstmt.executeQuery();
 				if(rset.next())
 				{
-//					userID = rset.getInt(1);
-					System.out.println("User returned successfully");
-					int ID = rset.getInt("memberID");
-					String name = rset.getString("name");
-//					int yob = rset.getInt("yearofbirth");
-					String yob = Integer.toString(rset.getInt("yearofbirth"));
-					String email2 = rset.getString("email");
-					String password = rset.getString("password");
-					String street = rset.getString("street");
-					String town = rset.getString("town");
-					String postcode = rset.getString("postcode");
+					Member member = new Member();
+					member.setId(rset.getInt("memberID"));
+					member.setName(rset.getString("name"));
+					member.setYearOfBirth(rset.getString("yearofbirth"));
+					member.setEmail(rset.getString("email"));
+					member.setPassword(rset.getString("password"));
+					member.setAddress(new Address(rset.getString("street"), rset.getString("town"), rset.getString("postcode")));
 					
-					ret.add(name);
-					ret.add(yob);
-					ret.add(email);
-					ret.add(password);
-					ret.add(street);
-					ret.add(town);
-					ret.add(postcode);
-					return ret;
+					currentMember = member;
+					
+					return currentMember;
+					
+////					userID = rset.getInt(1);
+//					System.out.println("User returned successfully");
+//					int ID = rset.getInt("memberID");
+//					String name = rset.getString("name");
+////					int yob = rset.getInt("yearofbirth");
+//					String yob = Integer.toString(rset.getInt("yearofbirth"));
+//					String email2 = rset.getString("email");
+//					String password = rset.getString("password");
+//					String street = rset.getString("street");
+//					String town = rset.getString("town");
+//					String postcode = rset.getString("postcode");
+					
+//					ret.add(name);
+//					ret.add(yob);
+//					ret.add(email);
+//					ret.add(password);
+//					ret.add(street);
+//					ret.add(town);
+//					ret.add(postcode);
+//					return ret;
 				}
+				return null;
 						
 			}
 			catch(SQLException e)
 			{
 				System.out.println("Cannot return user");
 				e.printStackTrace();
-				
+				return null;
 			}
-			return ret;
+			
 		}
 		
 		
@@ -467,11 +478,233 @@ public class Library
 				
 				return null;
 			}
-
-					
+		
 		}
-	
-	
-	
+///search stock
+		
+		public ArrayList<StockDisplay> searchStock(String input)
+		{
+			return this.searchStockEncap(input);
+		}
+		
+		private ArrayList<StockDisplay> searchStockEncap(String input)
+		{
+//			String sql = "SELECT * FROM stock WHERE title OR author OR publisher OR volume OR issue OR year LIKE ?";
+			String sql = "SELECT * FROM stock WHERE title LIKE '%"+input+"%' OR"
+					+ " author LIKE '%"+input+"%' OR "
+					+ "publisher LIKE '%"+input+"%' OR "
+					+ "volume LIKE '%"+input+"%' OR "
+					+ "issue LIKE '%"+input+"%' OR "
+					+ "year LIKE '%"+input+"%'";
+			ArrayList<StockDisplay> searchStock = new ArrayList<StockDisplay>();
+			try 
+			{
+				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				rset = pstmt.executeQuery();
+				
+				while(rset.next())
+				{
+					StockDisplay s = new StockDisplay();
+					s.setStockID(rset.getInt("stockID"));
+					s.setTitle(rset.getString("title"));
+					s.setAuthor(rset.getString("author"));
+					s.setPublisher(rset.getString("publisher"));
+					s.setVolume(rset.getString("volume"));
+					s.setIssue(rset.getString("issue"));
+					s.setYear(rset.getString("year"));
+					s.setBorrowerID(rset.getInt("borrowerID"));
+					
+					searchStock.add(s);
+				}
+				return searchStock;
+						
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Cannot return stock items");
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+//get all available stock for borrowing
+		
+		public ArrayList<StockDisplay> displayAvailableStock()
+		{
+			return this.getAvailableStock();
+		}
+		
+		private ArrayList<StockDisplay> getAvailableStock()
+		{
 
+			String sql = "SELECT stockID, title, author, publisher, volume, issue, year FROM stock WHERE borrowerID IS NULL";
+
+			ArrayList<StockDisplay> stock = new ArrayList<StockDisplay>();
+			try 
+			{
+				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);				
+				rset = pstmt.executeQuery();
+				while (rset.next()) 
+				{
+					StockDisplay s = new StockDisplay();
+					s.setStockID(rset.getInt("stockID"));
+					s.setTitle(rset.getString("title"));
+					s.setAuthor(rset.getString("author"));
+					s.setPublisher(rset.getString("publisher"));
+					s.setVolume(rset.getString("volume"));
+					s.setIssue(rset.getString("issue"));
+					s.setYear(rset.getString("year"));
+					
+		            stock.add(s);
+				}
+				return stock;
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Cannot return available stock");
+				e.printStackTrace();
+				
+				return null;
+			}
+		
+		}
+		
+//show columns for borrowing		
+		public ArrayList<String> showBorrowColumns()
+		{
+			return this.getBorrowColumns();
+		}
+		
+		private ArrayList<String> getBorrowColumns()
+		{
+			String sql = "SHOW COLUMNS FROM stock;";
+
+			ArrayList<String> cols = new ArrayList<>();
+			try 
+			{
+				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);				
+				rset = pstmt.executeQuery();
+				while (rset.next()) 
+				{
+					String field = rset.getString("Field");
+					if(!field.equals("borrowerID"))
+					{
+							cols.add(field);
+					}
+				}
+
+				return cols;
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Cannot return column");
+				e.printStackTrace();
+				
+				return null;
+			}
+		}
+///borrow stock item
+		
+		public void borrowStockItem(int stockID)
+		{
+			this.borrowStockItemEncap(stockID);
+		}
+		
+		private void borrowStockItemEncap(int stockID)
+		{
+			String sql = "SELECT * FROM stock WHERE stockID LIKE ?";
+			try 
+			{
+				int memberID = currentMember.getId();
+
+				String sqlUpdate = "UPDATE stock SET borrowerID = ? WHERE stockID = ?";
+
+				pstmt = con.prepareStatement(sqlUpdate);
+				
+				pstmt.setInt(1, memberID);
+				pstmt.setInt(2, stockID);
+				pstmt.executeUpdate();
+
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Cannot borrow book");
+				e.printStackTrace();
+			}
+		}
+		
+///display borrowed stock
+		
+		public ArrayList<StockDisplay> displayBorrowedStock()
+		{
+			return this.getBorrowedStock();
+		}
+		
+		private ArrayList<StockDisplay> getBorrowedStock()
+		{
+
+			String sql = "SELECT stockID, title, author, publisher, volume, issue, year FROM stock WHERE borrowerID IS NOT NULL";
+
+			ArrayList<StockDisplay> stock = new ArrayList<StockDisplay>();
+			try 
+			{
+				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);				
+				rset = pstmt.executeQuery();
+				while (rset.next()) 
+				{
+					StockDisplay s = new StockDisplay();
+					s.setStockID(rset.getInt("stockID"));
+					s.setTitle(rset.getString("title"));
+					s.setAuthor(rset.getString("author"));
+					s.setPublisher(rset.getString("publisher"));
+					s.setVolume(rset.getString("volume"));
+					s.setIssue(rset.getString("issue"));
+					s.setYear(rset.getString("year"));
+					
+		            stock.add(s);
+				}
+				return stock;
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Cannot return borrowed stock");
+				e.printStackTrace();
+				
+				return null;
+			}
+		
+		}
+		
+//return stock item
+		public void returnStockItem(int stockID)
+		{
+			this.returnStockItemEncap(stockID);
+		}
+		
+		private void returnStockItemEncap(int stockID)
+		{
+			//String sql = "SELECT * FROM stock WHERE stockID LIKE ?";
+			
+			try 
+			{
+				//int memberID = currentMember.getId();
+
+				String sqlUpdate = "UPDATE stock SET borrowerID = NULL WHERE stockID = ?";
+
+				pstmt = con.prepareStatement(sqlUpdate);
+				
+				//pstmt.setInt(1, memberID);
+				pstmt.setInt(1, stockID);
+				pstmt.executeUpdate();
+
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Cannot return book");
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
 } // end of class

@@ -32,6 +32,21 @@ public class StockDisplay
 		this.year = year;
 		this.borrowerID = borrowerID;
 	}
+	
+	
+	public StockDisplay(int stockID, String title, String author, String publisher, String volume, String issue,
+			String year) {
+		super();
+		this.stockID = stockID;
+		this.title = title;
+		this.author = author;
+		this.publisher = publisher;
+		this.volume = volume;
+		this.issue = issue;
+		this.year = year;
+	}
+	
+	
 //	protected Member member;
 	public int getStockID() {
 		return stockID;

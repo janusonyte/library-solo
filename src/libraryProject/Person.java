@@ -3,7 +3,7 @@ package libraryProject;
 public class Person 
 {
 
-	private int yearOfBirth;
+	private String yearOfBirth;
 	private String name;
 	private Address address;
 	
@@ -12,7 +12,7 @@ public class Person
 		//empty constructor
 	}
 	
-	public Person(int yearOfBirth, String name, Address address) 
+	public Person(String yearOfBirth, String name, Address address) 
 	{
 		
 		this.yearOfBirth = yearOfBirth;
@@ -20,12 +20,12 @@ public class Person
 		this.address = address;
 	}
 
-	public int getYearOfBirth() 
+	public String getYearOfBirth() 
 	{
 		return yearOfBirth;
 	}
 
-	public void setYearOfBirth(int yearOfBirth) 
+	public void setYearOfBirth(String yearOfBirth) 
 	{
 		this.yearOfBirth = yearOfBirth;
 	}

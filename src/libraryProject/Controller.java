@@ -6,13 +6,22 @@ import java.util.regex.*;
 public class Controller 
 {
 	private boolean valid = false;
+	private static Controller controller;
 	private Library library;
 	
-	public Controller()
+	private Controller()
 	{
-		library = new Library();
-		//blank constructor
+		library = Library.getInstance();
 	}
+	
+	public static Controller getInstance() 
+	{
+        if(controller == null) 
+        {
+        	controller = new Controller();
+        }      
+        return controller;
+    }
 	
 	
 	public boolean sanitiseInput(String fname, String lname, String uname, String pword)
@@ -77,7 +86,7 @@ public class Controller
 		
 	}
 	
-	public ArrayList<String> getUser(String email, String pword)
+	public Member getUser(String email, String pword)
 	{
 		return library.getUser(email, pword);
 	}
@@ -93,6 +102,45 @@ public class Controller
 		library.setConnection();
 		return library.showColumns();
 	}
+	
+	public ArrayList<StockDisplay> searchStock(String input)
+	{
+		library.setConnection();
+		return library.searchStock(input);
+	}
+	
+	public ArrayList<StockDisplay> displayAvailableStock()
+	{
+		library.setConnection();
+		return library.displayAvailableStock();
+	}
+	
+	
+	public ArrayList<String> showBorrowColumns()
+	{
+		library.setConnection();
+		return library.showBorrowColumns();
+	}
+	
+	public void borrowStockItem(int stockID)
+	{
+		library.setConnection();
+		library.borrowStockItem(stockID);
+	}
+	
+	public ArrayList<StockDisplay> displayBorrowedStock()
+	{
+		library.setConnection();
+		return library.displayBorrowedStock();
+	}
+	
+	public void returnStockItem(int stockID)
+	{
+		library.setConnection();
+		library.returnStockItem(stockID);
+	}
+	
+	
 	
 	/**public void updateDetails(String uname, String pword, String newFirstName, String newLastName, String newUserName, String newPassword)
 	{

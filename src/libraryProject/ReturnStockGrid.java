@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -50,7 +51,7 @@ public class ReturnStockGrid
 		returnStockGrid.setAlignment(Pos.CENTER);
 		returnStockGrid.setHgap(10);
 		returnStockGrid.setVgap(10);
-		//borrowStockGrid.setHgrow(arg0, arg1);
+		
 		returnStockGrid.setPadding(new Insets(10,10,10,10));
 
 		//setting scene
@@ -74,7 +75,7 @@ public class ReturnStockGrid
 		returnStockGrid.add(hbBtn1, 1, 3);
 
 		stockTable = new TableView<>();
-		//Parent stockScene = stockTable;
+		
 
 		ArrayList<String> cols = c.showBorrowColumns();///using method from borrowing, might work?
 		// creating columns
@@ -92,7 +93,9 @@ public class ReturnStockGrid
 		{
 			stockTable.getItems().add(data.get(i));
 		} 
-
+		
+		returnStockGrid.setHgrow(stockTable, Priority.ALWAYS);
+		returnStockGrid.setVgrow(stockTable, Priority.ALWAYS);
 		returnStockGrid.add(stockTable, 1,2);//adding the stockTable to the grid
 
 		searchTextField.textProperty().addListener(new ChangeListener<String>() ///search method

@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -43,7 +44,10 @@ public class ViewStockGrid {
 		viewStockGrid.setAlignment(Pos.CENTER);
 		viewStockGrid.setHgap(10);
 		viewStockGrid.setVgap(10);
-		viewStockGrid.setPadding(new Insets(25,25,25,25));
+		//viewStockGrid.autosize();
+		//viewStockGrid.isResizable();
+		
+		viewStockGrid.setPadding(new Insets(20,20,20,20));
 
 		//setting scene
 		Text viewStockTitle = new Text("View Stock");
@@ -64,7 +68,6 @@ public class ViewStockGrid {
 		viewStockGrid.add(hbBtn7, 1, 3);
 		
 		TableView<StockDisplay> stockTable = new TableView<>();
-        //Parent stockScene = stockTable;
         
 		ArrayList<String> cols = c.getColumns();
         // creating columns
@@ -82,9 +85,11 @@ public class ViewStockGrid {
         {
         	stockTable.getItems().add(data.get(i));
         } 
-
+        
+        viewStockGrid.setHgrow(stockTable, Priority.ALWAYS);
+        viewStockGrid.setVgrow(stockTable, Priority.ALWAYS);
         viewStockGrid.add(stockTable, 1,2);
-		
+        
 		searchTextField.textProperty().addListener(new ChangeListener<String>() 
 		{
 			@Override

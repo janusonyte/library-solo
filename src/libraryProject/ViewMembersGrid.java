@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -42,6 +43,7 @@ public class ViewMembersGrid
 		viewMembersGrid.setAlignment(Pos.CENTER);
 		viewMembersGrid.setHgap(10);
 		viewMembersGrid.setVgap(10);
+		
 		viewMembersGrid.setPadding(new Insets(25,25,25,25));
 
 		//setting scene
@@ -86,7 +88,8 @@ public class ViewMembersGrid
 			//memberTable.getItems().add(data.get(i));
 			memberTable.getItems().add(data.get(i));
 		} 
-
+		viewMembersGrid.setHgrow(memberTable, Priority.ALWAYS);
+		viewMembersGrid.setVgrow(memberTable, Priority.ALWAYS);
 		viewMembersGrid.add(memberTable, 1, 2);
 
 		searchTextField.textProperty().addListener(new ChangeListener<String>() 

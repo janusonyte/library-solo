@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -92,8 +93,8 @@ public class BorrowStockGrid
 	        	stockTable.getItems().add(data.get(i));
 	        } 
 	        
-	        
-
+			borrowStockGrid.setHgrow(stockTable, Priority.ALWAYS);
+			borrowStockGrid.setVgrow(stockTable, Priority.ALWAYS);
 	        borrowStockGrid.add(stockTable, 1,2);
 			
 			searchTextField.textProperty().addListener(new ChangeListener<String>() 

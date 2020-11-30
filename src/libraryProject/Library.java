@@ -272,18 +272,18 @@ public class Library
 	
 	//check if user is in database
 	
-	public boolean checkUser(String email, String pword)
+	public String checkUser(String email, String pword)
 	{
-		boolean userInDb = this.checkUserInDb(email, pword);
+		String userInDb = this.checkUserInDb(email, pword);
 		return userInDb;
 	}
 	
-		private boolean checkUserInDb(String email, String pword)
+		private String checkUserInDb(String email, String pword)
 		{
 			System.out.println(email + pword);
-			String sql = "SELECT email, password FROM members WHERE email LIKE ? AND password LIKE ?";
+			String sql = "SELECT email, password, type FROM members WHERE email LIKE ? AND password LIKE ?";
 //			int userID = 0;
-			boolean userInDb = false;
+			String userInDb = "";
 			
 			try 
 			{
@@ -293,25 +293,29 @@ public class Library
 				
 				rset = pstmt.executeQuery();
 				if(rset.next())
-				{
-//					userID = rset.getInt(1);
-					System.out.println("User in DB");
-					userInDb = true;
-					return userInDb;
+				{ 
+					if(rset.getString("type").equals("user"))
+					{
+						System.out.println("User in DB. User is a member of the library");
+						userInDb = "user";
+						return userInDb;	
+					}
+					else if(rset.getString("type").equals("admin"))
+					{
+						System.out.println("User in DB. User is an admin of the library");
+						userInDb = "admin";
+						return userInDb;
+					}
 				}
-				System.out.println("User not in DB");
-				
-				return false;
-
-						
+				return userInDb;		
 			}
 			catch(SQLException e)
 			{
 				System.out.println("User Check Unsuccessful");
 				e.printStackTrace();
-				
+				return userInDb;
 			}
-			return userInDb;
+			
 		}
 		
 //get user info

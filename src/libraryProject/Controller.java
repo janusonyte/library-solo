@@ -78,10 +78,10 @@ public class Controller
 		library.addJournal(title, volume, issue, year);
 	}
 	
-	public boolean checkUser(String email, String pword)
+	public String checkUser(String email, String pword)
 	{
 		library.setConnection();
-		boolean userInDb = library.checkUser(email, pword);
+		String userInDb = library.checkUser(email, pword);
 		return userInDb;
 	}
 	

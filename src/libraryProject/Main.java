@@ -67,12 +67,12 @@ public class Main extends Application
 
 			Button signIn = new Button("Log In");
 			Button signUp = new Button("Sign Up");
-			Button tempAdmin = new Button("Temp admin");
+			//Button tempAdmin = new Button("Temp admin");
 			HBox hbBtn = new HBox(10);
 			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 			hbBtn.getChildren().add(signIn);
 			hbBtn.getChildren().add(signUp);
-			hbBtn.getChildren().add(tempAdmin);
+			//hbBtn.getChildren().add(tempAdmin);
 			loginGrid.add(hbBtn, 1, 3);
 			
 //code for scene 1 - register
@@ -432,8 +432,8 @@ public class Main extends Application
 			{
 				public void handle(ActionEvent e)
 				{
-					boolean userInDb = c.checkUser(loginEmailTextField.getText(), loginPwField.getText());
-					if(userInDb == true)
+					String userInDb = c.checkUser(loginEmailTextField.getText(), loginPwField.getText());
+					if(userInDb == "user")
 					{
 						primaryStage.setScene(infoScene);
 						System.out.println("user returned to main");
@@ -447,6 +447,11 @@ public class Main extends Application
 						retrievedStreet.setText("Street: " + ret.getAddress().getStreet());
 						retrievedTown.setText("Town: " + ret.getAddress().getTown());
 						retrievedPC.setText("Postcode: " + ret.getAddress().getPostcode());
+					}
+					else if(userInDb == "admin")
+					{
+						primaryStage.setScene(adminScene);
+						System.out.println("admin returned to main");
 					}
 					else
 					{
@@ -505,17 +510,17 @@ public class Main extends Application
 			
 			//tempAdmin button
 			
-			tempAdmin.setOnAction(new EventHandler<ActionEvent>() 
-			{
-				
-				public void handle(ActionEvent e)
-				{
-					
-	                System.out.println();
-	                primaryStage.setScene(adminScene);
-
-				}
-			});
+//			tempAdmin.setOnAction(new EventHandler<ActionEvent>() 
+//			{
+//				
+//				public void handle(ActionEvent e)
+//				{
+//					
+//	                System.out.println();
+//	                primaryStage.setScene(adminScene);
+//
+//				}
+//			});
 			
 			addBook.setOnAction(new EventHandler<ActionEvent>() 
 			{

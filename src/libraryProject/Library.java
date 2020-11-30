@@ -1,10 +1,11 @@
 package libraryProject;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+//import java.util.List;
+//import javafx.collections.FXCollections;
+//import javafx.collections.ObservableList;
 
 //for 'model'
 import java.sql.DriverManager;
@@ -417,7 +418,7 @@ public class Library
 		private ArrayList<StockDisplay> getAllStock()
 		{
 
-			String sql = "SELECT stockID, title, author, publisher, volume, issue, year, borrowerID FROM stock";
+			String sql = "SELECT stockID, title, author, publisher, volume, issue, year, borrowerID, returndate FROM stock";
 
 			ArrayList<StockDisplay> stock = new ArrayList<StockDisplay>();
 			try 
@@ -435,6 +436,8 @@ public class Library
 					s.setIssue(rset.getString("issue"));
 					s.setYear(rset.getString("year"));
 					s.setBorrowerID(rset.getInt("borrowerID"));
+					s.setReturndate(rset.getString("returndate"));
+					
 
 		            stock.add(s);
 				}
@@ -482,6 +485,7 @@ public class Library
 					s.setIssue(rset.getString("issue"));
 					s.setYear(rset.getString("year"));
 					s.setBorrowerID(rset.getInt("borrowerID"));
+					s.setReturndate(rset.getString("returndate"));
 					
 					searchStock.add(s);
 				}
@@ -506,7 +510,7 @@ public class Library
 		private ArrayList<StockDisplay> getAvailableStock()
 		{
 
-			String sql = "SELECT stockID, title, author, publisher, volume, issue, year FROM stock WHERE borrowerID IS NULL";
+			String sql = "SELECT stockID, title, author, publisher, volume, issue, year, returndate FROM stock WHERE borrowerID IS NULL";
 
 			ArrayList<StockDisplay> stock = new ArrayList<StockDisplay>();
 			try 
@@ -523,6 +527,7 @@ public class Library
 					s.setVolume(rset.getString("volume"));
 					s.setIssue(rset.getString("issue"));
 					s.setYear(rset.getString("year"));
+					s.setReturndate(rset.getString("returndate"));
 					
 		            stock.add(s);
 				}
@@ -584,14 +589,51 @@ public class Library
 			String sql = "SELECT * FROM stock WHERE stockID LIKE ?";
 			try 
 			{
+				//adding returnDate when item is borrowed
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				//Getting current date
+				Calendar cal = Calendar.getInstance();
+				
+				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pstmt.setInt(1, stockID);
+				
+				rset = pstmt.executeQuery();
+				
+				
+				String newDate = "";
+				if(rset.next())
+				{ 	
+					//Displaying current date in the desired format
+					System.out.println("Current Date: "+sdf.format(cal.getTime()));
+						
+					if(rset.getString("type").equals("book"))
+					{
+						//Number of Days to add
+						cal.add(Calendar.DAY_OF_MONTH, 30);
+					}
+					else if(rset.getString("type").equals("journal"))
+					{
+						//Number of Days to add
+						cal.add(Calendar.DAY_OF_MONTH, 2);  
+
+					}
+					//Date after adding the days to the current date
+					newDate = sdf.format(cal.getTime()); 
+					//Displaying the new Date after addition of Days to current date
+					System.out.println("Date after Addition: "+newDate);
+				}
+				
+				
+				
 				int memberID = currentMember.getId();
 
-				String sqlUpdate = "UPDATE stock SET borrowerID = ? WHERE stockID = ?";
+				String sqlUpdate = "UPDATE stock SET borrowerID = ?, returndate = ? WHERE stockID = ?";
 
 				pstmt = con.prepareStatement(sqlUpdate);
 				
 				pstmt.setInt(1, memberID);
-				pstmt.setInt(2, stockID);
+				pstmt.setString(2, newDate);
+				pstmt.setInt(3, stockID);
 				pstmt.executeUpdate();
 
 			}
@@ -612,7 +654,7 @@ public class Library
 		private ArrayList<StockDisplay> getBorrowedStock()
 		{
 
-			String sql = "SELECT stockID, title, author, publisher, volume, issue, year FROM stock WHERE borrowerID IS NOT NULL";
+			String sql = "SELECT stockID, title, author, publisher, volume, issue, year, returndate FROM stock WHERE borrowerID IS NOT NULL";
 
 			ArrayList<StockDisplay> stock = new ArrayList<StockDisplay>();
 			try 
@@ -629,6 +671,7 @@ public class Library
 					s.setVolume(rset.getString("volume"));
 					s.setIssue(rset.getString("issue"));
 					s.setYear(rset.getString("year"));
+					s.setReturndate(rset.getString("returndate"));
 					
 		            stock.add(s);
 				}
@@ -636,7 +679,7 @@ public class Library
 			}
 			catch(SQLException e)
 			{
-				System.out.println("Cannot return borrowed stock");
+				System.out.println("Cannot show borrowed stock");
 				e.printStackTrace();
 				
 				return null;
@@ -658,7 +701,7 @@ public class Library
 			{
 				//int memberID = currentMember.getId();
 
-				String sqlUpdate = "UPDATE stock SET borrowerID = NULL WHERE stockID = ?";
+				String sqlUpdate = "UPDATE stock SET borrowerID = NULL, returndate = NULL WHERE stockID = ?";
 
 				pstmt = con.prepareStatement(sqlUpdate);
 				

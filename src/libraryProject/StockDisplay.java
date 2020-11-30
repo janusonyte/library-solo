@@ -13,6 +13,7 @@ public class StockDisplay
 	private String issue;
 	private String year;
 	private int borrowerID;
+	private String returndate;
 	
 	public StockDisplay()
 	{
@@ -21,7 +22,7 @@ public class StockDisplay
 	
 	
 	public StockDisplay(int stockID, String title, String author, String publisher, String volume, String issue,
-			String year, int borrowerID) 
+			String year, int borrowerID, String returndate) 
 	{
 		//super();
 		this.stockID = stockID;
@@ -32,21 +33,37 @@ public class StockDisplay
 		this.issue = issue;
 		this.year = year;
 		this.borrowerID = borrowerID;
+		this.returndate = returndate;
 	}
 	
+//	public StockDisplay(int stockID, String title, String author, String publisher, String volume, String issue,
+//			String year, int borrowerID, String returnDate) 
+//	{
+//		//super();
+//		this.stockID = stockID;
+//		this.title = title;
+//		this.author = author;
+//		this.publisher = publisher;
+//		this.volume = volume;
+//		this.issue = issue;
+//		this.year = year;
+//		this.borrowerID = borrowerID;
+//		this.returnDate = returnDate;
+//	}
 	
-	public StockDisplay(int stockID, String title, String author, String publisher, String volume, String issue,
-			String year) 
-	{
-		//super();
-		this.stockID = stockID;
-		this.title = title;
-		this.author = author;
-		this.publisher = publisher;
-		this.volume = volume;
-		this.issue = issue;
-		this.year = year;
-	}
+	
+//	public StockDisplay(int stockID, String title, String author, String publisher, String volume, String issue,
+//			String year) 
+//	{
+//		//super();
+//		this.stockID = stockID;
+//		this.title = title;
+//		this.author = author;
+//		this.publisher = publisher;
+//		this.volume = volume;
+//		this.issue = issue;
+//		this.year = year;
+//	}
 	
 	
 	public int getStockID() 
@@ -113,6 +130,17 @@ public class StockDisplay
 	{
 		this.borrowerID = borrowerID;
 	}
+
+	public String getReturndate() 
+	{
+		return returndate;
+	}
+	
+	public void setReturndate(String returndate) 
+	{
+		this.returndate = returndate;
+	}
+	
 	
 	
 } // end of class

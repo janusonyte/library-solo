@@ -51,7 +51,7 @@ public class Main extends Application
 			loginGrid.setVgap(10);
 			loginGrid.setPadding(new Insets(25,25,25,25));
 
-			Text scenetitle = new Text("Library");
+			Text scenetitle = new Text("Welcome to the H&D Library");
 			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			loginGrid.add(scenetitle, 0, 0, 2, 1);
 
@@ -73,12 +73,8 @@ public class Main extends Application
 			hbBtn.getChildren().add(signIn);
 			hbBtn.getChildren().add(signUp);
 			hbBtn.getChildren().add(tempAdmin);
-			loginGrid.add(hbBtn, 1, 4);
+			loginGrid.add(hbBtn, 1, 3);
 			
-			final Text caution = new Text();
-			loginGrid.add(caution, 1, 6);
-
-
 //code for scene 1 - register
 			//setting grid
 			GridPane regGrid = new GridPane();
@@ -117,7 +113,7 @@ public class Main extends Application
 			regGrid.add(regPwField, 1, 4);
 		
 			//street
-			Label street = new Label("Street: ");
+			Label street = new Label("House/Flat number and Street: ");
 			regGrid.add(street, 0, 5);
 			TextField streetTextField =  new TextField();
 			regGrid.add(streetTextField, 1, 5);
@@ -134,8 +130,6 @@ public class Main extends Application
 			TextField pcTextField =  new TextField();
 			regGrid.add(pcTextField, 1, 7);
 		
-			
-
 			//register and back buttons
 			Button register = new Button("Register");
 			Button back = new Button("Back");
@@ -188,15 +182,10 @@ public class Main extends Application
 			//retrieved postcode
 			Label retrievedPC = new Label("Postcode: ");
 			infoGrid.add(retrievedPC, 1, 7);
-			
-			
-			//books on loan
-			///
-			///
 
 			//Borrow a book, return a book, log off buttons
-			Button borrowBook = new Button("Borrow a book");
-			Button returnBook = new Button("Return a book");
+			Button borrowBook = new Button("Borrow a book/journal");
+			Button returnBook = new Button("Return a book/journal");
 			Button logoff = new Button("Log Off");
 			HBox hbBtn2 = new HBox(10);
 			hbBtn2.setAlignment(Pos.BOTTOM_CENTER);
@@ -215,7 +204,7 @@ public class Main extends Application
 
 			Text adminSceneTitle = new Text("Administrator screen");
 			adminSceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-			adminGrid.add(scenetitle, 0, 0, 2, 1);
+			adminGrid.add(adminSceneTitle, 0, 0, 2, 1);
 			
 			Button addBook = new Button("Add Book");
 			Button addJournal = new Button("Add Journal");
@@ -223,15 +212,36 @@ public class Main extends Application
 			Button printStock = new Button("Print Stock");
 			Button listMembers = new Button("List Members");
 			Button logOffAdmin = new Button("Log off");
-			HBox hbBtn3 = new HBox(10);
-			hbBtn3.setAlignment(Pos.BOTTOM_RIGHT);
+			HBox hbBtn3 = new HBox(20);
+			HBox hbBtn6 = new HBox(20);
+			HBox hbBtn7 = new HBox(20);
+			HBox hbBtn8 = new HBox(20);
+			HBox hbBtn9 = new HBox(20);
+			HBox hbBtn10 = new HBox(20);
+			
+			hbBtn3.setAlignment(Pos.CENTER);
 			hbBtn3.getChildren().add(addBook);
-			hbBtn3.getChildren().add(addJournal);
-			hbBtn3.getChildren().add(viewStock);
-			hbBtn3.getChildren().add(printStock);
-			hbBtn3.getChildren().add(listMembers);
-			hbBtn3.getChildren().add(logOffAdmin);
-			adminGrid.add(hbBtn3, 1, 2);
+			
+			hbBtn6.setAlignment(Pos.CENTER);
+			hbBtn6.getChildren().add(addJournal);
+			
+			hbBtn7.setAlignment(Pos.CENTER);
+			hbBtn7.getChildren().add(viewStock);
+			
+			hbBtn8.setAlignment(Pos.CENTER);
+			hbBtn8.getChildren().add(printStock);
+			
+			hbBtn9.setAlignment(Pos.CENTER);
+			hbBtn9.getChildren().add(listMembers);
+			
+			hbBtn10.setAlignment(Pos.CENTER);
+			hbBtn10.getChildren().add(logOffAdmin);
+			adminGrid.add(hbBtn3, 1, 3);
+			adminGrid.add(hbBtn6, 1, 4);
+			adminGrid.add(hbBtn7, 1, 5);
+			adminGrid.add(hbBtn8, 1, 6);
+			adminGrid.add(hbBtn9, 1, 7);
+			adminGrid.add(hbBtn10, 1, 8);
 			
 			
 //addBook scene (admin)
@@ -329,12 +339,15 @@ public class Main extends Application
 			Scene loginScene = new Scene(loginGrid, 500, 400);//login/register welcome scene
 			Scene registerScene = new Scene(regGrid, 700, 500);//sign up scene
 			Scene infoScene = new Scene(infoGrid, 700, 500);//user information scene
-			Scene adminScene = new Scene(adminGrid, 700, 500);//admin scene
+			Scene adminScene = new Scene(adminGrid, 400, 400);//admin scene
 			Scene addBookScene = new Scene(addBookGrid, 700, 500);//add Book scene
 			Scene addJournalScene = new Scene(addJournalGrid, 700, 500); //add Journal scene
 			
 			ViewStockGrid viewStockGrid = new ViewStockGrid(primaryStage, adminScene);//view stock scene(for admins)
 			Scene viewStockScene = new Scene(viewStockGrid.getGrid(), 800,700);
+			
+			ViewMembersGrid viewMembersGrid = new ViewMembersGrid(primaryStage, adminScene);//view member scene(for admins)
+			Scene viewMembersScene = new Scene(viewMembersGrid.getGrid(), 800,700);
 			
 			BorrowStockGrid borrowStockGrid = new BorrowStockGrid(primaryStage, infoScene);//borrow from stock(for users)
 			Scene borrowStockScene = new Scene(borrowStockGrid.getGrid(), 800,700);
@@ -342,10 +355,11 @@ public class Main extends Application
 			ReturnStockGrid returnStockGrid = new ReturnStockGrid(primaryStage, infoScene); //return to stock(for users)
 			Scene returnStockScene = new Scene(returnStockGrid.getGrid(), 800,700);
 			
+			
 
 			loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(loginScene);
-			primaryStage.setTitle("Library");
+			primaryStage.setTitle("Welcome to the H&D Library");
 			primaryStage.show();
 
 ////BUTTONS
@@ -375,13 +389,14 @@ public class Main extends Application
 			{
 				public void handle(ActionEvent e)
 				{
-					
-					//primaryStage.setScene(scene);
-					//boolean isValid = c.sanitiseInput(nameTextField.getText(), regEmailTextField.getText(), regPwField.getText(), pcTextField.getText());
+					boolean isValid = c.sanitiseInput(nameTextField.getText(),
+							regEmailTextField.getText(), 
+							regPwField.getText(), 
+							pcTextField.getText());
 					
 					int yob = Integer.parseInt(yobTextField.getText());//it is now an int (from String)
-					//if(isValid)
-					//{
+					if(isValid)
+					{
 						c.setUser(nameTextField.getText(),
 								yob,
 								regEmailTextField.getText(), 
@@ -402,13 +417,13 @@ public class Main extends Application
 						Alert registerAlert = new Alert(AlertType.INFORMATION);
 						registerAlert.setContentText("Registration Successful");
 						registerAlert.show();
-					//}
-					//else 
-					//{
-						//Alert registerError = new Alert(AlertType.ERROR);
-						//registerError.setContentText("Registration failed, please check details");
-						//registerError.show();
-					//}
+					}
+					else 
+					{
+						Alert registerError = new Alert(AlertType.ERROR);
+						registerError.setContentText("Registration failed, please check details");
+						registerError.show();
+					}
 					
 				}
 			});
@@ -424,7 +439,6 @@ public class Main extends Application
 						System.out.println("user returned to main");
 						Member ret = c.getUser(loginEmailTextField.getText(), loginPwField.getText());
 						
-						
 						infoSceneTitle.setText("Welcome, " + ret.getName());
 						retrievedName.setText("Name: " + ret.getName());
 						retrievedYOB.setText("Year of birth: " + ret.getYearOfBirth());
@@ -436,8 +450,11 @@ public class Main extends Application
 					}
 					else
 					{
-						caution.setFill(Color.FIREBRICK);
-						caution.setText("User not found");	
+//						caution.setFill(Color.FIREBRICK);
+//						caution.setText("User not found");	
+						Alert registerError = new Alert(AlertType.ERROR);
+						registerError.setContentText("Login failed, please check details");
+						registerError.show();
 					}
 				
 
@@ -495,7 +512,7 @@ public class Main extends Application
 				{
 					
 	                System.out.println();
-	                primaryStage.setScene(adminScene); //***** change this
+	                primaryStage.setScene(adminScene);
 
 				}
 			});
@@ -561,7 +578,7 @@ public class Main extends Application
 				{
 					
 	                System.out.println();
-	                primaryStage.setScene(adminScene); //***** change this
+	                primaryStage.setScene(adminScene); 
 
 				}
 			});
@@ -622,8 +639,8 @@ public class Main extends Application
 				public void handle(ActionEvent e)
 				{
 					
-	                System.out.println("listing all of the members in an output file(ideally), or the console");
-	               // primaryStage.setScene(); //***** change this
+	                System.out.println("List members button pressed");
+	                primaryStage.setScene(viewMembersScene); 
 
 				}
 			});

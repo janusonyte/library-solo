@@ -24,20 +24,25 @@ public class Controller
     }
 	
 	
-	public boolean sanitiseInput(String fname, String lname, String uname, String pword)
+	public boolean sanitiseInput(String name, String email, String pw, String pc)
 
 	{
-		System.out.println(fname + lname + uname + pword);
+		System.out.println(name + email + pw + pc);
 		
-		String regex = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
-		String regexOne = "^[A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9]+)*@"+"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-		String regexTwo = "^(?=.*\\d).{4,8}$";
-		boolean a = Pattern.matches(regex, fname);
-		boolean b = Pattern.matches(regex, lname);
-		boolean c = Pattern.matches(regexOne, uname);
-		boolean d = Pattern.matches(regexTwo, pword);
+		String regexName = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"; //name can have spaces
+		String regexEmail = "^[A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9]+)*@"+"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		String regexPassword = "^(?=.*\\d).{4,8}$"; //special character required
+		String regexPostcode = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})";
+		//String regexPostcode = "^(GIR 0AA)|[a-z-[qvx]](?:\\d|\\d{2}|[a-z-[qvx]]\\d|[a-z-[qvx]]\\d[a-z-[qvx]]|[a-z-[qvx]]\\d{2})(?:\\s?\\d[a-z-[qvx]]{2})?$";
+		boolean a = Pattern.matches(regexName, name);
+		boolean b = Pattern.matches(regexEmail, email);
+		boolean c = Pattern.matches(regexPassword, pw);
+		boolean d = Pattern.matches(regexPostcode, pc);
+		//boolean f = Pattern.matches(regexName, town);
+		//boolean b = Pattern.matches(regex, lname);
 		
-		if(a && b && c && d == true)
+		
+		if(a && b && c && d  == true)
 		{
 			return true;
 		}
@@ -91,6 +96,8 @@ public class Controller
 		return library.getUser(email, pword);
 	}
 	
+	
+//stock	
 	public ArrayList<StockDisplay> displayStock()
 	{
 		library.setConnection();
@@ -140,16 +147,47 @@ public class Controller
 		library.returnStockItem(stockID);
 	}
 	
+//members
 	
+//	public ArrayList<Member> displayMembers()
+//	{
+//		library.setConnection();
+//		return library.displayMembers();
+//	}
+//	
+//	public ArrayList<String> getMemberColumns()
+//	{
+//		library.setConnection();
+//		return library.showMemberColumns();
+//	}
+//	
+//	public ArrayList<Member> searchMembers(String input)
+//	{
+//		library.setConnection();
+//		return library.searchMembers(input);
+//	}
 	
-	/**public void updateDetails(String uname, String pword, String newFirstName, String newLastName, String newUserName, String newPassword)
+	//new version
+	
+	public ArrayList<MemberDisplay> displayMembers()
 	{
-		m.updateDetails(uname, pword, newFirstName, newLastName, newUserName, newPassword);
+		library.setConnection();
+		return library.displayMembers();
 	}
 	
-	public void deleteProfile(String uname, String pword)
+	public ArrayList<String> getMemberColumns()
 	{
-		m.deleteProfile(uname, pword);
-	}**/
+		library.setConnection();
+		return library.showMemberColumns();
+	}
+	
+	public ArrayList<MemberDisplay> searchMembers(String input)
+	{
+		library.setConnection();
+		return library.searchMembers(input);
+	}
+	
+	
+
 	
 }//end of class

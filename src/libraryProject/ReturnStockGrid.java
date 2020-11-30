@@ -66,7 +66,7 @@ public class ReturnStockGrid
 
 		//return and back buttons
 		Button back = new Button("Back");
-		Button returnStock = new Button("Return");
+		Button returnStock = new Button("Check currently borrowed items and return");
 		HBox hbBtn1 = new HBox(10);
 		hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn1.getChildren().add(back);

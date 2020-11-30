@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
+//import javafx.collections.transformation.FilteredList;
+//import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -87,45 +87,45 @@ public class ViewStockGrid {
 		
 		searchTextField.textProperty().addListener(new ChangeListener<String>() 
 		{
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable,
-		            String oldValue, String newValue) 
-		    {
-		        System.out.println(" Text Changed to  " + newValue + "\n");
-		        stockTable.getItems().clear();
-		        if(searchTextField.getText() == "")//if searchfield is empty
-		          {
-		              ArrayList<StockDisplay> data = c.displayStock();
-		              // iterating through the stock data and adding info to the table
-		              for (int i = 0; i < data.size(); i++) 
-		              {
-		              	stockTable.getItems().add(data.get(i));
-		              } 
-		          }
-		          else //if there is something in the searchfield
-		          {
-		              ArrayList<StockDisplay> data = c.searchStock(searchTextField.getText());
-		              // searching through the stock data and adding info to the table
-		              for (int i = 0; i < data.size(); i++) 
-		              {
-		              	stockTable.getItems().add(data.get(i));
-		              }  
-		          } 
-		    }
-		});
-		
-	
-      	//back action for button //back to login in
-			back.setOnAction(new EventHandler<ActionEvent>() 
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) 
 			{
-				public void handle(ActionEvent e)
+				System.out.println(" Text Changed to  " + newValue + "\n");
+				stockTable.getItems().clear();
+				if(searchTextField.getText() == "")//if searchfield is empty
 				{
-
-					primaryStage.setScene(adminScene);
+					ArrayList<StockDisplay> data = c.displayStock();
+					// iterating through the stock data and adding info to the table
+					for (int i = 0; i < data.size(); i++) 
+					{
+						stockTable.getItems().add(data.get(i));
+					} 
 				}
-			});
-			
-          return viewStockGrid;
+				else //if there is something in the searchfield
+				{
+					ArrayList<StockDisplay> data = c.searchStock(searchTextField.getText());
+					// searching through the stock data and adding info to the table
+					for (int i = 0; i < data.size(); i++) 
+					{
+						stockTable.getItems().add(data.get(i));
+					}  
+				} 
+			}
+		});
+
+	
+		//back action for button //back to login in
+		back.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			public void handle(ActionEvent e)
+			{
+
+				primaryStage.setScene(adminScene);
+			}
+		});
+
+		return viewStockGrid;
 	}
 
 }//end of class

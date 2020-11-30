@@ -24,11 +24,10 @@ public class Library
 //current user
 	
 	Member currentMember;
-	
-	
 
-	private List<Member>members;
+	private ArrayList<Member>members;
 	private ArrayList<Stock>stock;
+	private ArrayList<MemberDisplay> memberDisplay;
 		
 	// Singleton object --similar to the Bank project
 	private static Library library;
@@ -46,6 +45,7 @@ public class Library
 	{
 		members = new ArrayList<Member>();//instantiating members
 		stock = new ArrayList<Stock>();//instantiating stock
+		memberDisplay = new ArrayList<MemberDisplay>();
 	}
 
 	
@@ -59,30 +59,6 @@ public class Library
 		this.currentMember = currentMember;
 	}
 
-	public List<Member> getMembers() 
-	{
-		return members;
-	}
-	
-//	public void addBook(String title, String author, String publisher, boolean isAvailable, int memberID, int numCopies) 
-//	{
-//		int libraryNum = stock.size()+ 1;
-//		isAvailable = true;
-//		stock.add(new Book(libraryNum, title, author, publisher, isAvailable, memberID, numCopies));
-//	}
-	
-//	public void addJournal(String title, int volume, int issue, boolean isAvailable, int memberID, int numCopies) 
-//	{
-//		int libraryNum = stock.size() +1;
-//		isAvailable = true;
-//		stock.add(new Journal(libraryNum, title, volume, issue, isAvailable, memberID, numCopies));
-//	}
-
-//	public List<Stock> getStock() 
-//	{
-//		return stock;
-//	}
-	
 	public String getBooks() 
 	{
 		return null;
@@ -369,27 +345,6 @@ public class Library
 					currentMember = member;
 					
 					return currentMember;
-					
-////					userID = rset.getInt(1);
-//					System.out.println("User returned successfully");
-//					int ID = rset.getInt("memberID");
-//					String name = rset.getString("name");
-////					int yob = rset.getInt("yearofbirth");
-//					String yob = Integer.toString(rset.getInt("yearofbirth"));
-//					String email2 = rset.getString("email");
-//					String password = rset.getString("password");
-//					String street = rset.getString("street");
-//					String town = rset.getString("town");
-//					String postcode = rset.getString("postcode");
-					
-//					ret.add(name);
-//					ret.add(yob);
-//					ret.add(email);
-//					ret.add(password);
-//					ret.add(street);
-//					ret.add(town);
-//					ret.add(postcode);
-//					return ret;
 				}
 				return null;
 						
@@ -705,6 +660,261 @@ public class Library
 			}
 		}
 		
+////get members
+//		public ArrayList<Member> displayMembers()
+//		{
+//			return this.getMembers();
+//		}
+//		
+//		
+//		public ArrayList<String> showMemberColumns()
+//		{
+//			return this.getMemberColumns();
+//		}
+//		
+//		private ArrayList<String> getMemberColumns()
+//		{
+//			String sql = "SHOW COLUMNS FROM members;";
+//
+//			ArrayList<String> cols = new ArrayList<>();
+//			try 
+//			{
+//				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);				
+//				rset = pstmt.executeQuery();
+////				while (rset.next()) 
+////				{
+////					cols.add(rset.getString("Field"));
+////				}
+//				
+//				while (rset.next()) 
+//				{
+//					String field = rset.getString("Field");
+//					if(!field.equals("password"))
+//					{
+//							cols.add(field);
+//					}
+//				}
+//
+//				return cols;
+//			}
+//			catch(SQLException e)
+//			{
+//				System.out.println("Cannot return columns from members");
+//				e.printStackTrace();
+//				
+//				return null;
+//			}
+//		}
+//		
+//		private ArrayList<Member> getMembers()
+//		{
+//
+//			String sql = "SELECT memberID, name, yearofbirth, street, town, postcode, email FROM members WHERE type = 'user'";
+//
+//			ArrayList<Member> members = new ArrayList<Member>();
+//			try 
+//			{
+//				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);				
+//				rset = pstmt.executeQuery();
+//				while (rset.next()) 
+//				{
+//					Member m = new Member();
+//					m.setId(rset.getInt("memberID"));
+//					m.setName(rset.getString("name"));
+//					m.setYearOfBirth(rset.getString("yearofbirth"));
+//					m.setAddress(new Address(rset.getString("street"), rset.getString("town"), rset.getString("postcode")));
+//					m.setEmail(rset.getString("email"));
+//					//m.setPassword(rset.getString("password"));
+//				
+//		            members.add(m);
+//				}
+//				return members;
+//			}
+//			catch(SQLException e)
+//			{
+//				System.out.println("Cannot return members");
+//				e.printStackTrace();
+//				
+//				return null;
+//			}
+//		
+//		}
+//		
+////search members
+//		
+//		public ArrayList<Member> searchMembers(String input)
+//		{
+//			return this.searchMembersEncap(input);
+//		}
+//		
+//		private ArrayList<Member> searchMembersEncap(String input)
+//		{
+//			String sql = "SELECT * FROM members WHERE type = 'user' AND name LIKE '%"+input+"%' OR"
+//					+ " yearofbirth LIKE '%"+input+"%' OR "
+//					+ "street LIKE '%"+input+"%' OR "
+//					+ "town LIKE '%"+input+"%' OR "
+//					+ "postcode LIKE '%"+input+"%' OR "
+//					+ "email LIKE '%"+input+"%' OR "
+//					+ "memberID LIKE '%"+input+"%'";
+//			
+//			ArrayList<Member> searchMembers = new ArrayList<Member>();
+//			try 
+//			{
+//				pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//				rset = pstmt.executeQuery();
+//				
+//				while(rset.next())
+//				{
+//
+//					Member m = new Member();
+//					m.setId(rset.getInt("memberID"));
+//					m.setName(rset.getString("name"));
+//					m.setYearOfBirth(rset.getString("yearofbirth"));
+//					m.setAddress(new Address(rset.getString("street"), rset.getString("town"), rset.getString("postcode")));
+//					m.setEmail(rset.getString("email"));
+//					//m.setPassword(rset.getString("password"));
+//						
+//					searchMembers.add(m);
+//				}
+//				return searchMembers;
+//						
+//			}
+//			catch(SQLException e)
+//			{
+//				System.out.println("Cannot return members");
+//				e.printStackTrace();
+//				return null;
+//			}
+//		}
+	//////////new version
+		
+		//get members
+				public ArrayList<MemberDisplay> displayMembers()
+				{
+					return this.getMembers();
+				}
+				
+				
+				public ArrayList<String> showMemberColumns()
+				{
+					return this.getMemberColumns();
+				}
+				
+				private ArrayList<String> getMemberColumns()
+				{
+					String sql = "SHOW COLUMNS FROM members;";
+
+					ArrayList<String> cols = new ArrayList<>();
+					try 
+					{
+						pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);				
+						rset = pstmt.executeQuery();
+//						
+						
+						while (rset.next()) 
+						{
+							String field = rset.getString("Field");
+							if(!field.equals("type") && !field.equals("password"))
+							{
+									cols.add(field);
+							}
+						}
+
+						return cols;
+					}
+					catch(SQLException e)
+					{
+						System.out.println("Cannot return columns from members");
+						e.printStackTrace();
+						
+						return null;
+					}
+				}
+				
+				private ArrayList<MemberDisplay> getMembers()
+				{
+
+					String sql = "SELECT memberID, name, yearofbirth, street, town, postcode, email FROM members WHERE type = 'user'";
+
+					ArrayList<MemberDisplay> memberDisplay = new ArrayList<MemberDisplay>();
+					try 
+					{
+						pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);				
+						rset = pstmt.executeQuery();
+						while (rset.next()) 
+						{
+							MemberDisplay md = new MemberDisplay();
+							md.setMemberID(rset.getInt("memberID"));
+							md.setName(rset.getString("name"));
+							md.setYearofbirth(rset.getString("yearofbirth"));
+							md.setStreet(rset.getString("street"));
+							md.setTown(rset.getString("town"));
+							md.setPostcode(rset.getString("postcode"));
+							md.setEmail(rset.getString("email"));
+							//m.setPassword(rset.getString("password"));
+						
+				            memberDisplay.add(md);
+				            
+						}
+						return memberDisplay;
+					}
+					catch(SQLException e)
+					{
+						System.out.println("Cannot return members");
+						e.printStackTrace();
+						
+						return null;
+					}
+				
+				}
+				
+		//search members
+				
+				public ArrayList<MemberDisplay> searchMembers(String input)
+				{
+					return this.searchMembersEncap(input);
+				}
+				
+				private ArrayList<MemberDisplay> searchMembersEncap(String input)
+				{
+					String sql = "SELECT * FROM members WHERE type = 'user' AND name LIKE '%"+input+"%' OR"
+							+ " yearofbirth LIKE '%"+input+"%' OR "
+							+ "street LIKE '%"+input+"%' OR "
+							+ "town LIKE '%"+input+"%' OR "
+							+ "postcode LIKE '%"+input+"%' OR "
+							+ "email LIKE '%"+input+"%' OR "
+							+ "memberID LIKE '%"+input+"%'";
+					
+					ArrayList<MemberDisplay> searchMembers = new ArrayList<MemberDisplay>();
+					try 
+					{
+						pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+						rset = pstmt.executeQuery();
+						
+						while(rset.next())
+						{
+							MemberDisplay md = new MemberDisplay();
+							md.setMemberID(rset.getInt("memberID"));
+							md.setName(rset.getString("name"));
+							md.setYearofbirth(rset.getString("yearofbirth"));
+							md.setStreet(rset.getString("street"));
+							md.setTown(rset.getString("town"));
+							md.setPostcode(rset.getString("postcode"));
+							md.setEmail(rset.getString("email"));
+							//m.setPassword(rset.getString("password"));
+								
+							searchMembers.add(md);
+						}
+						return searchMembers;
+								
+					}
+					catch(SQLException e)
+					{
+						System.out.println("Cannot return members");
+						e.printStackTrace();
+						return null;
+					}
+				}	
 		
 		
 } // end of class

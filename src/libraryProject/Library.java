@@ -160,16 +160,16 @@ public class Library
 	}
 	
 	
-	public void addBook(String title, String author, String publisher, String year)
+	public boolean addBook(String title, String author, String publisher, String year)
 	{
-		this.insertBook(title, author, publisher, year);
+		return this.insertBook(title, author, publisher, year);
 	}
 	
-	private void insertBook(String title, String author, String publisher, String year)
+	private boolean insertBook(String title, String author, String publisher, String year)
 	{
-		String sql = "INSERT INTO stock (title, author, publisher, year) VALUES (?, ?, ?, ?)";
-		int userID = 0;
-
+		String sql = "INSERT INTO stock (title, author, publisher, year, type) VALUES (?, ?, ?, ?, 'book')";
+		int bookID = 0;
+		boolean wasSuccessful = false;
 		try 
 		{
 						pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -184,17 +184,20 @@ public class Library
 							rset = pstmt.getGeneratedKeys();
 							if(rset.next())
 							{
-							userID = rset.getInt(1);
+							bookID = rset.getInt(1);
 							}
 			
 						}
 
 			System.out.println("Book added to database");
+			wasSuccessful = true;
+			return wasSuccessful;
 		}
 		catch(SQLException e)
 		{
 			System.out.println("Error Executing Statement");
 			e.printStackTrace();
+			return wasSuccessful;
 		}
 				finally
 				{
@@ -215,16 +218,16 @@ public class Library
 	}
 	
 //add journal to database	
-	public void addJournal(String title, String volume, String issue, String year)
+	public boolean addJournal(String title, String volume, String issue, String year)
 	{
-		this.insertJournal(title, volume, issue, year);
+		return this.insertJournal(title, volume, issue, year);
 	}
 	
-	private void insertJournal(String title, String volume, String issue, String year)
+	private boolean insertJournal(String title, String volume, String issue, String year)
 	{
-		String sql = "INSERT INTO stock (title, volume, issue, year) VALUES (?, ?, ?, ?)";
-		int userID = 0;
-
+		String sql = "INSERT INTO stock (title, volume, issue, year, type) VALUES (?, ?, ?, ?, 'journal')";
+		int journalID = 0;
+		boolean wasSuccessful = false;
 		try 
 		{
 						pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -239,17 +242,20 @@ public class Library
 							rset = pstmt.getGeneratedKeys();
 							if(rset.next())
 							{
-							userID = rset.getInt(1);
+							journalID = rset.getInt(1);
 							}
 			
 						}
 
 			System.out.println("Journal added to database");
+			wasSuccessful = true;
+			return wasSuccessful;
 		}
 		catch(SQLException e)
 		{
 			System.out.println("Error Executing Statement");
 			e.printStackTrace();
+			return wasSuccessful;
 		}
 				finally
 				{
@@ -390,9 +396,13 @@ public class Library
 				rset = pstmt.executeQuery();
 				while (rset.next()) 
 				{
-					cols.add(rset.getString("Field"));
+					//cols.add(rset.getString("Field"));
+					String field = rset.getString("Field");
+					if(!field.equals("type"))
+					{
+							cols.add(field);
+					}
 				}
-
 				return cols;
 			}
 			catch(SQLException e)
@@ -407,7 +417,7 @@ public class Library
 		private ArrayList<StockDisplay> getAllStock()
 		{
 
-			String sql = "SELECT * FROM stock";
+			String sql = "SELECT stockID, title, author, publisher, volume, issue, year, borrowerID FROM stock";
 
 			ArrayList<StockDisplay> stock = new ArrayList<StockDisplay>();
 			try 
@@ -546,7 +556,7 @@ public class Library
 				while (rset.next()) 
 				{
 					String field = rset.getString("Field");
-					if(!field.equals("borrowerID"))
+					if(!field.equals("borrowerID") && !field.equals("type"))
 					{
 							cols.add(field);
 					}

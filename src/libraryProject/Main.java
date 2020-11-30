@@ -185,7 +185,7 @@ public class Main extends Application
 
 			//Borrow a book, return a book, log off buttons
 			Button borrowBook = new Button("Borrow a book/journal");
-			Button returnBook = new Button("Return a book/journal");
+			Button returnBook = new Button("Check/return borrowed items ");
 			Button logoff = new Button("Log Off");
 			HBox hbBtn2 = new HBox(10);
 			hbBtn2.setAlignment(Pos.BOTTOM_CENTER);
@@ -565,13 +565,30 @@ public class Main extends Application
 				
 				public void handle(ActionEvent e)
 				{
-					c.addBook(bookTitleTextField.getText(),
+					boolean wasSuccessful = c.addBook(bookTitleTextField.getText(),
 							bookAuthorTextField.getText(),
 							bookPublisherTextField.getText(),
 							bookYearTextField.getText());
 					
-	                System.out.println("Test - book added to stock");
-	               // primaryStage.setScene(); //***** change this
+					if(wasSuccessful == true)
+					{
+						 System.out.println("Book added to stock");
+			                bookTitleTextField.setText("");
+							bookAuthorTextField.setText("");
+							bookPublisherTextField.setText("");
+							bookYearTextField.setText("");
+							
+							Alert bookAlert = new Alert(AlertType.INFORMATION);
+							bookAlert.setContentText("Book added successfully!");
+							bookAlert.show();
+					}
+					else 
+					{
+						System.out.println("Book was not added to stock");
+						Alert bookError = new Alert(AlertType.ERROR);
+						bookError.setContentText("Action failed, please check connection/fields");
+						bookError.show();
+					}
 
 				}
 			});
@@ -593,13 +610,29 @@ public class Main extends Application
 				
 				public void handle(ActionEvent e)
 				{
-					
-	                System.out.println("Test - journal added to stock");
-	                c.addJournal(journalTitleTextField.getText(),
+					boolean wasSuccessful = c.addJournal(journalTitleTextField.getText(),
 							journalVolumeTextField.getText(),
 							journalIssueTextField.getText(),
 							journalYearTextField.getText());
-	               // primaryStage.setScene(); //***** change this
+					if(wasSuccessful == true)
+					{
+						System.out.println("Journal added to stock");
+						journalTitleTextField.setText("");
+						journalVolumeTextField.setText("");
+						journalIssueTextField.setText("");
+						journalYearTextField.setText("");
+						
+						Alert journalAlert = new Alert(AlertType.INFORMATION);
+						journalAlert.setContentText("Journal added successfully!");
+						journalAlert.show();
+					}
+					else
+					{
+						System.out.println("Journal was not added to stock");
+						Alert journalError = new Alert(AlertType.ERROR);
+						journalError.setContentText("Action failed, please check connection/fields");
+						journalError.show();
+					}
 
 				}
 			});

@@ -66,16 +66,16 @@ public class Controller
 		library.setUser(name, yob, email, pw, street, town, pc);
 	}
 	
-	public void addBook(String title, String author, String publisher, String year)
+	public boolean addBook(String title, String author, String publisher, String year)
 	{
 		library.setConnection();
-		library.addBook(title, author, publisher, year);
+		return library.addBook(title, author, publisher, year);
 	}
 	
-	public void addJournal(String title, String volume, String issue, String year)
+	public boolean addJournal(String title, String volume, String issue, String year)
 	{
 		library.setConnection();
-		library.addJournal(title, volume, issue, year);
+		return library.addJournal(title, volume, issue, year);
 	}
 	
 	public String checkUser(String email, String pword)

@@ -581,6 +581,7 @@ public class Main extends Application
 							Alert bookAlert = new Alert(AlertType.INFORMATION);
 							bookAlert.setContentText("Book added successfully!");
 							bookAlert.show();
+							viewStockGrid.display();
 					}
 					else 
 					{
@@ -625,6 +626,8 @@ public class Main extends Application
 						Alert journalAlert = new Alert(AlertType.INFORMATION);
 						journalAlert.setContentText("Journal added successfully!");
 						journalAlert.show();
+						viewStockGrid.display();
+						
 					}
 					else
 					{

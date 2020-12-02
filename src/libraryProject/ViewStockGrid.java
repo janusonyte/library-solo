@@ -30,6 +30,8 @@ public class ViewStockGrid {
 	Controller c = Controller.getInstance();
 	Scene adminScene;
 	Stage primaryStage;
+	TableView<StockDisplay> stockTable;
+	TextField searchTextField;
 	
 	public ViewStockGrid(Stage primaryStage, Scene adminScene) 
 	{
@@ -57,7 +59,7 @@ public class ViewStockGrid {
 		//Search stock
 		Label searchTitle = new Label("Search Stock ");
 		viewStockGrid.add(searchTitle, 0, 1);
-		TextField searchTextField =  new TextField();
+		searchTextField =  new TextField();
 		viewStockGrid.add(searchTextField, 1, 1);
 	
 		// back button
@@ -67,7 +69,7 @@ public class ViewStockGrid {
 		hbBtn7.getChildren().add(back);
 		viewStockGrid.add(hbBtn7, 1, 3);
 		
-		TableView<StockDisplay> stockTable = new TableView<>();
+		stockTable = new TableView<>();
         
 		ArrayList<String> cols = c.getColumns();
         // creating columns
@@ -96,28 +98,11 @@ public class ViewStockGrid {
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) 
 			{
-				System.out.println(" Text Changed to  " + newValue + "\n");
-				stockTable.getItems().clear();
-				if(searchTextField.getText() == "")//if searchfield is empty
-				{
-					ArrayList<StockDisplay> data = c.displayStock();
-					// iterating through the stock data and adding info to the table
-					for (int i = 0; i < data.size(); i++) 
-					{
-						stockTable.getItems().add(data.get(i));
-					} 
-				}
-				else //if there is something in the searchfield
-				{
-					ArrayList<StockDisplay> data = c.searchStock(searchTextField.getText());
-					// searching through the stock data and adding info to the table
-					for (int i = 0; i < data.size(); i++) 
-					{
-						stockTable.getItems().add(data.get(i));
-					}  
-				} 
+				display();
 			}
 		});
+		
+		
 
 	
 		//back action for button //back to login in
@@ -131,6 +116,29 @@ public class ViewStockGrid {
 		});
 
 		return viewStockGrid;
+	}
+	
+	public void display() {
+		System.out.println(" Text Changed to  " + searchTextField.getText() + "\n");
+		stockTable.getItems().clear();
+		if(searchTextField.getText() == "")//if searchfield is empty
+		{
+			ArrayList<StockDisplay> data = c.displayStock();
+			// iterating through the stock data and adding info to the table
+			for (int i = 0; i < data.size(); i++) 
+			{
+				stockTable.getItems().add(data.get(i));
+			} 
+		}
+		else //if there is something in the searchfield
+		{
+			ArrayList<StockDisplay> data = c.searchStock(searchTextField.getText());
+			// searching through the stock data and adding info to the table
+			for (int i = 0; i < data.size(); i++) 
+			{
+				stockTable.getItems().add(data.get(i));
+			}  
+		} 
 	}
 
 }//end of class
